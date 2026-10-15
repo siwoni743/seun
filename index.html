@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP 인스타그램 비밀 계정 구독</title>
+    <style>
+        :root {
+            --primary: #a855f7;
+            --primary-hover: #9333ea;
+            --bg-dark: #09090b;
+            --card-bg: #18181b;
+            --border-color: #27272a;
+            --accent-gold: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #f4f4f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* 1. 실시간 신청 현황 알림 바 */
+        .ticker-wrap {
+            width: 100%;
+            background: linear-gradient(90deg, #7e22ce, #c026d3);
+            color: #ffffff;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .ticker {
+            display: inline-block;
+            animation: ticker 25s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 480px;
+            margin-top: 24px;
+        }
+
+        /* 2. 상단 프로필 카드 */
+        .profile-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-img-wrap {
+            position: relative;
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 12px auto;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            padding: 2px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .badge-live {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: #10b981;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 2px solid var(--card-bg);
+        }
+
+        .profile-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .profile-sub {
+            font-size: 0.85rem;
+            color: #a1a1aa;
+        }
+
+        /* 공지 박스 */
+        .notice-box {
+            background: #202024;
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #d4d4d8;
+        }
+
+        .notice-box ul {
+            list-style: none;
+            margin-top: 6px;
+        }
+
+        .notice-box li {
+            position: relative;
+            padding-left: 14px;
+            margin-bottom: 4px;
+        }
+
+        .notice-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* 계좌 정보 카드 */
+        .account-card {
+            background: linear-gradient(135deg, #27272a, #18181b);
+            border: 1px solid #3f3f46;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-info {
+            font-size: 0.9rem;
+        }
+
+        .account-info div:first-child {
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+        }
+
+        .account-info div:last-child {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.05rem;
+        }
+
+        .btn-copy {
+            background: #3f3f46;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary);
+        }
+
+        /* 폼 스타일 */
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e4e4e7;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px;
+            background-color: #27272a;
+            border: 1px solid #3f3f46;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        /* 요금제 셀렉트 옵션 스타일링 코멘트 */
+        .select-wrap {
+            position: relative;
+        }
+
+        .price-display {
+            background: #27272a;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #3f3f46;
+        }
+
+        .price-display span {
+            font-size: 0.88rem;
+            color: #a1a1aa;
+        }
+
+        .price-display strong {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* 3. 한 줄 후기 섹션 */
+        .reviews-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .reviews-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .review-card {
+            background: #202024;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 0.83rem;
+        }
+
+        .review-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            color: #a1a1aa;
+            margin-bottom: 4px;
+            font-size: 0.78rem;
+        }
+
+        .review-stars {
+            color: var(--accent-gold);
+        }
+
+        .review-text {
+            color: #e4e4e7;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 1. 실시간 신청 현황 알림 바 -->
+<div class="ticker-wrap">
+    <div class="ticker">
+        <div class="ticker-item">🔥 [방금전] user_99***님 3개월 구독 신청 완료</div>
+        <div class="ticker-item">✨ [2분 전] insta_k***님 6개월 VIP 신청 완료</div>
+        <div class="ticker-item">🎉 [5분 전] mini_0***님 1개월 구독 시작</div>
+        <div class="ticker-item">🔥 [방금전] user_99***님 3개월 구독 신청 완료</div>
+        <div class="ticker-item">✨ [2분 전] insta_k***님 6개월 VIP 신청 완료</div>
+        <div class="ticker-item">🎉 [5분 전] mini_0***님 1개월 구독 시작</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 2. 상단 프로필 카드 -->
+    <div class="profile-card">
+        <div class="profile-img-wrap">
+            <!-- 원하시는 비계 프로필 이미지 주소로 변경 가능합니다 -->
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="프로필" class="profile-img">
+            <span class="badge-live">LIVE</span>
+        </div>
+        <div class="profile-title">비밀 계정 Premium</div>
+        <div class="profile-sub">단독 일상 & 실시간 인스타 비계 멤버십</div>
+    </div>
+
+    <!-- 안내 사항 -->
+    <div class="notice-box">
+        <p style="font-weight: 700; color: #ffffff;">📌 입금 및 신청 안내</p>
+        <ul>
+            <li>아래 계좌로 입금 후 신청서를 제출하시면 확인 즉시 승인됩니다.</li>
+            <li>계정 닉네임과 인스타그램 아이디를 정확하게 작성해 주세요.</li>
+            <li>결제 후 교환 및 환불이 불가능하니 확인 후 진행 부탁드립니다.</li>
+        </ul>
+    </div>
+
+    <!-- 계좌 복사 영역 -->
+    <div class="account-card">
+        <div class="account-info">
+            <div>입금 계좌번호 (카카오뱅크)</div>
+            <div id="accountNum">3333-01-1234567 예금주: 홍길동</div>
+        </div>
+        <button class="btn-copy" onclick="copyAccount()">복사하기</button>
+    </div>
+
+    <!-- 신청 폼 -->
+    <div class="form-card">
+        <form id="subForm">
+            <div class="form-group">
+                <label for="nickname">계정 닉네임</label>
+                <input type="text" id="nickname" placeholder="닉네임을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="instaId">인스타그램 아이디</label>
+                <input type="text" id="instaId" placeholder="@아이디를 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="depositor">입금자명</label>
+                <input type="text" id="depositor" placeholder="실제 입금하신 성함을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="period">구독 기간 선택</label>
+                <div class="select-wrap">
+                    <select id="period" onchange="updatePrice()">
+                        <option value="1개월" data-price="15,000">1개월 (30일) - 15,000원</option>
+                        <!-- 3개월 추천 태그 표시 -->
+                        <option value="3개월" data-price="45,000" selected>3개월 (90일) ⭐️ BEST 추천 - 45,000원</option>
+                        <option value="6개월" data-price="90,000">6개월 (180일) VIP - 90,000원</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="price-display">
+                <span>최종 입금 금액</span>
+                <strong id="priceText">45,000원</strong>
+            </div>
+
+            <button type="submit" class="btn-submit">입금 완료 및 카카오톡 확인 받기</button>
+        </form>
+    </div>
+
+    <!-- 3. 실시간 한 줄 후기 -->
+    <div class="reviews-section">
+        <div class="reviews-title">
+            <span>⭐️ 실시간 이용자 후기</span>
+            <span style="font-size: 0.8rem; color: #a1a1aa; font-weight: 400;">(4.9/5.0)</span>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <span>s2_m***님</span>
+                <span class="review-stars">★★★★★</span>
+            </div>
+            <div class="review-text">신청하고 5분 만에 비계 승인되었어요! 업로드도 엄청 자주 올라와서 만족스럽습니다 🥺</div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <span>kakao_user***님</span>
+                <span class="review-stars">★★★★★</span>
+            </div>
+            <div class="review-text">3개월로 신청했는데 가성비 너무 좋아요. 비계 내용 진짜 알차네요 ㅋㅋㅋ</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 카카오톡 오픈채팅 / 오픈프로필 링크 (본인 링크로 수정해 주세요)
+    const KAKAO_CHAT_URL = "https://open.kakao.com/o/s9aBiBSi"; // <-- 본인 카카오톡 링크 작성
+
+    function updatePrice() {
+        const select = document.getElementById('period');
+        const selectedOption = select.options[select.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        document.getElementById('priceText').innerText = price + '원';
+    }
+
+    function copyAccount() {
+        const accountText = "110-587-641213 신한은행"; // 복사될 계좌번호
+        navigator.clipboard.writeText(accountText).then(() => {
+            alert('계좌번호가 복사되었습니다!');
+        }).catch(() => {
+            alert('계좌번호: 110-587-641213 신한은행');
+        });
+    }
+
+    document.getElementById('subForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nickname = document.getElementById('nickname').value;
+        const instaId = document.getElementById('instaId').value;
+        const depositor = document.getElementById('depositor').value;
+        const period = document.getElementById('period').value;
+        const price = document.getElementById('priceText').innerText;
+
+        // 입금 확인 안내 창
+        const confirmMsg = `[신청 내용 확인]\n\n• 닉네임: ${nickname}\n• 인스타그램 ID: ${instaId}\n• 입금자명: ${depositor}\n• 선택 기간: ${period} (${price})\n\n입금을 완료하셨나요? [확인]을 누르면 입금 확인을 위해 카카오톡으로 이동합니다.`;
+
+        if(confirm(confirmMsg)) {
+            // 카카오톡으로 전송할 메시지 조합 (URL 인코딩)
+            const message = `[비계 구독 입금 확인 요청]\n- 닉네임: ${nickname}\n- 인스타 ID: ${instaId}\n- 입금자명: ${depositor}\n- 신청 기간: ${period} (${price})\n\n입금 완료했습니다. 승인 부탁드립니다!`;
+            
+            // 카카오톡으로 자동 이동
+            window.location.href = KAKAO_CHAT_URL;
+        }
+    });
+
+    // 페이지 로드시 기본 금액 업데이트
+    updatePrice();
+</script>
+
+</body>
+</html>
